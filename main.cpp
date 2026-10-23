@@ -18,9 +18,21 @@ using std::getline;
 
 int main()
 {
-
 	//import from text files
+	//No more than 100 products, transactions, and customers
+	const int max_items = 100;
 
+	//Open the three data files from the assignment
+	std::ifstream peopleFile("people.txt");
+	std::ifstream cardFile("credit_card.txt");
+	std::ifstream productFile("products.txt");
+
+	if (!peopleFile || !cardFile || !productFile)
+	{
+		std::cerr << "Error: Could not open file.\n";
+		return 1;
+	}
+	
 	//add to store and other variables
 
 	//print store info after you finish importing info
