@@ -140,7 +140,7 @@ int main()
 
 		for (int i = 0; i < numPeople; i++)
 			{
-				if (!store1.add_customer(people[i]00
+				if (!store1.add_customer(people[i]))
 					{
 					cout << "Error: Could not add a customer to the store." << endl;
 					return 1;
@@ -178,7 +178,7 @@ int main()
 
 			//Get the customer's latest information from the store
 			//their balance might have changed from an earlier purchase
-			Person cutomer = store1.get_customer(customerIndex);
+			Person customer = store1.get_customer(customerIndex);
 			product item = store1.get_product(productIndex);
 
 			//try to buy item and see if purchase succeeds
