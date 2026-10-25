@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
+#include <ctime>
 
 #include "address.h"
 #include "credit_card.h"
@@ -26,6 +27,7 @@ int main()
 	Person people[max];
 	credit_card cards[max];
 	product products[max];
+	string cardNames[max];
 
 	int numPeople = 0;
 	int numCards = 0;
@@ -54,9 +56,13 @@ int main()
 		return 1;
 	}
 
+	//move past the newline after the number of credit cards
+	cardFile.ignore(10000, '\n');
+
 	for (int i = 0; i < numCards; i++)
 		{
 			//Each card has a number, credit limit, and current balance
+			getline(cardFile, cardNames[i]);
 			cardFile >> cards[i].cc_number;
 			cardFile >> cards[i].limit;
 			cardFile >> cards[i].current_balance;
@@ -66,6 +72,10 @@ int main()
 				cout << "Error: Could not read credit card information." << endl;
 				return 1;
 			}
+
+			//move to next customers name
+			cardFile.ignore(10000, '\n');
+			
 		}
 
 	//Read number of people at the top of people.txt
@@ -82,6 +92,9 @@ int main()
 		cout << "Error: The number of people and credit cards does not match." << endl;
 		return 1;
 	}
+
+	//skip the newline after the number so getline starts at the first name
+	peopleFile.ignore(10000, '\n');
 
 	for (int i = 0; i < numPeople; i++)
 		{
@@ -105,9 +118,26 @@ int main()
 				return 1;
 			}
 
+			//find credit card that has customers name
+			int cardIndex = -1;
+			for (int j = 0; j < numCards; j++)
+				{
+					if (cardNames[j] == name)
+					{
+						cardIndex = j;
+						break;
+					}
+				}
+
+			//stop if no credit card was found for this customer
+			if (cardIndex == -1)
+			{
+				cout << "Error: No credit card found for " << name << endl;
+				return 1;
+			}
+
 			//create a person using info just read
-			//credit card and person belong to same index value i
-			people[i] = Person(name, phone, home, cards[i]);
+			people[i] = Person(name, phone, home, cards[cardIndex]);
 		}
 
 	//read products from product.txt
@@ -117,6 +147,9 @@ int main()
 		cout << "Error: Invalid number of products." << endl;
 		return 1;
 	}
+
+	//skip newline before reading first product name
+	productFile.ignore(10000, '\n');
 
 	for (int i = 0; i < numProducts; i++)
 		{
@@ -130,6 +163,10 @@ int main()
 				cout << "Error: Could not read product information." << endl;
 				return 1;
 			}
+
+			//skip the newline after the price before reading the next name
+			productFile.ignore(10000, '\n');
+			
 		}
 
 	//add to store and other variables
@@ -211,4 +248,6 @@ int main()
 	//print store info at the end
 	cout << "Store info: " << endl << endl;
 	cout << store1.store_info() << endl << endl;
+
+	return 0;
 }
