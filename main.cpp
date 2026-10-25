@@ -45,6 +45,29 @@ int main()
 		return 1;
 	}
 
+	//Read credit cards first so we can give one to each person
+	//The first nmber in the file tells how many cards there are
+	cardFile >> numCards;
+	if (!cardFile || numCards < 1 || numCards > MAX)
+	{
+		cout << "Error: Invalid number of credit cards." << endl;
+		return 1;
+	}
+
+	for (int i = 0; i < numCards; i++)
+		{
+			//Each card has a number, credit limit, and current balance
+			cardFile >> cards[i].cc_number;
+			cardFile >> cards[i].limit;
+			cardFile >> cards[i].current_balance;
+
+			if (!cardFile)
+			{
+				cout << "Error: cold not read credit card information." << endl;
+				return 1;
+			}
+		}
+
 	//add to store and other variables
 
 	//print store info after you finish importing info
