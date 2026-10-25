@@ -63,7 +63,7 @@ int main()
 
 			if (!cardFile)
 			{
-				cout << "Error: cold not read credit card information." << endl;
+				cout << "Error: Could not read credit card information." << endl;
 				return 1;
 			}
 		}
