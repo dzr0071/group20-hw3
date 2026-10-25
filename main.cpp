@@ -110,9 +110,51 @@ int main()
 			people[i] = Person(name, phone, home, cards[i]);
 		}
 
-	
+	//read products from product.txt
+	productFile >> numProducts;
+	if (!productFile || numProducts < 1 || numProducts > max)
+	{
+		cout << "Error: Invalid number of products." << endl;
+		return 1;
+	}
+
+	for (int i = 0; i < numProducts; i++)
+		{
+			//each product has a name, description, and price
+			getline(productFile, products[i].name);
+			getline(productFile, products[i].description);
+			productFile >> products[i].price;
+
+			if (!productFile)
+			{
+				cout << "Error: Could not read product information." << endl;
+				return 1;
+			}
+		}
 
 	//add to store and other variables
+
+	//create store that will hold customers and products
+
+	Store store1;
+
+		for (int i = 0; i < numPeople; i++)
+			{
+				if (!store1.add_customer(people[i]00
+					{
+					cout << "Error: Could not add a customer to the store." << endl;
+					return 1;
+				}
+			}
+
+		for (int i = 0; i < numProducts; i++)
+			{
+				if (!store1.add_product(products[i]))
+				{
+					cout << "Error: Could not add a product to the store." << endl;
+					return 1;
+				}
+			}
 
 	//print store info after you finish importing info
 	//from text files and add them to your store
@@ -121,6 +163,51 @@ int main()
 
 	//make random number of random transactions
 
+	//set up random numbers and choose between 11 and 99 purchase attempts
+	srand(time(0));
+	int numAttempts = rand() % 89 + 11;
+
+	for (int i = 0; i < numAttempts; i++)
+		{
+			//pick a random customer and product from the store
+			int customerIndex = rand() % store1.num_customers();
+			int productIndex = rand() % store1.num_products();
+
+			//pick quantity from 1 - 9
+			int quantity = rand() % 9 + 1;
+
+			//Get the customer's latest information from the store
+			//their balance might have changed from an earlier purchase
+			Person cutomer = store1.get_customer(customerIndex);
+			product item = store1.get_product(productIndex);
+
+			//try to buy item and see if purchase succeeds
+			bool success = store1.make_purchase(customer, item, quantity);
+
+			if (success)
+			{
+				cout << "Successful transaction!" << endl;
+				cout << "Transaction details:" << endl;
+
+
+				//The last transaction in the store is the one that was just made
+				int lastIndex = store1.num_transactions() - 1;
+				transaction latest = store1.get_transaction(lastIndex);
+				cout << latest.transaction_info() << endl << endl;
+			}
+			else
+			{
+				//a failed purchase is not saved as a completed transaction so print the info about the attempt here
+				cout << "Unsuccessful transaction." << endl;
+				cout << "Transaction details:" << endl;
+				cout << "Person:" << endl;
+				cout << customer.person_info() << endl;
+				cout << "Product:" << endl;
+				cout << item.product_info() << endl;
+				cout << "Purchase quantity: " << quantity << endl << endl;
+			}
+		}
+			
 	//print store info at the end
 	cout << "Store info: " << endl << endl;
 	cout << store1.store_info() << endl << endl;
